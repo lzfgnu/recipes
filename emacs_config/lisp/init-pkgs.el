@@ -21,7 +21,7 @@
 		  spacemacs-theme
 		  ))
 		  
-(setq pkg-selected my-pkgs)
+(setq package-selected-packages my-pkgs)
 (defun my-pkg-installedp ()
   (loop for pkg in my-pkgs
 	when (not (package-installed-p pkg))
