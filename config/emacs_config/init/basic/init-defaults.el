@@ -1,0 +1,8 @@
+(global-linum-mode t)
+(column-number-mode t)
+(delete-selection-mode t)
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+(setq read-file-name-completion-ignore-case t)
+;; (setq line-move-visual nil)
+(provide 'init-defaults)
