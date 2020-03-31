@@ -7,7 +7,9 @@ namespace AV {
     BinaryReader(bufferSize) {}
   
   BinaryFileReader::~BinaryFileReader() {
-    CloseFile();
+    if (!file.IsOpen()) {
+      CloseFile();
+    }
   }
 
   bool BinaryFileReader::OpenFile(const std::string &filePath) {
