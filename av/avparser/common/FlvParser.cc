@@ -1,6 +1,8 @@
 #include "FlvParser.h"
 #include "ByteUtils.h"
 #include <cassert>
+
+
 namespace AV {
   const int FLV_HEADER_SIZE = 9;
   const int BACK_PTR_SIZE = 4;
@@ -50,6 +52,7 @@ namespace AV {
     return AVResult::OK;
   }
 
+
   AVResult FlvParser::ParseBody(BinaryReader* reader) {
     while (reader->HaveBytes()) {
       AVResult res = ParseTag(reader);
@@ -57,6 +60,8 @@ namespace AV {
 	// TODO  ==>  Clean up
       }
     }
+
+
     return AVResult::OK;
   }
 
@@ -66,15 +71,44 @@ namespace AV {
     // time_streamp => 3byte
     // time_stamp_extended => 1byte
     // stream_id => 3byte
-    Byte buf[11];
-    READ_AND_EXPECT(buf, 11);
-    int timestamp = BytesToInt32(buf+4, 3, ByteOrder::BE);
-    int size = BytesToInt32(buf+1, 3, ByteOrder::BE);
-    ::printf("time : %d\n", timestamp);
-    Byte* data = new Byte[size];
-    READ_AND_EXPECT(data, size);
-    delete[] data;
-    READ_AND_EXPECT(buf, 4);
+    Byte type;
+    READ_AND_EXPECT(&type, 1);
+    switch (type) {
+    case 9: {
+      return ParseVideoTag(reader);
+      break;
+    }
+    case 8: {
+      return ParseAudioTag(reader);
+      break;
+    }
+    case 18 {
+      return ParseScriptTag(reader);
+      break;
+    }
+    default {
+      break;
+    }
+    }
     return AVResult::OK;
+  }
+
+  AVResult FlvParser::ParseVideoTag(BinaryReader* reader) {
+    Byte buf[10];
+    READ_AND_EXPECT(buf, 10);
+    int size = BytesToInt32(buf, 3, ByteOrder::BE);
+    
+  }
+
+  AVResult FlvParser::ParseAudioTag(BinaryReader* reader) {
+    Byte buf[10];
+    READ_AND_EXPECT(buf, 10);
+    int size = BytesToInt32(buf, 3, ByteOrder::BE);
+  }
+
+  AVResult FlvParser::ParseScriptTag(BinaryReader* reader) {
+    Byte buf[10];
+    READ_AND_EXPECT(buf, 10);
+    int size = BytesToInt32(buf, 3, ByteOrder::BE);
   }
 } // AV

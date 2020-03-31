@@ -21,5 +21,9 @@ namespace AV {
     AVResult ParseHeader(BinaryReader* reader);
     AVResult ParseBody(BinaryReader* reader);
     AVResult ParseTag(BinaryReader* reader);
+    AVResult ParseVideoTag(BinaryReader* reader);
+    AVResult ParseAudioTag(BinaryReader* reader);
+    AVResult ParseScriptTag(BinaryReader* reader);
   };
 } // AV
+
